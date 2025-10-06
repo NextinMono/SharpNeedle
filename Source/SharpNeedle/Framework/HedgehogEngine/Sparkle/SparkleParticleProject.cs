@@ -1,11 +1,10 @@
 ﻿namespace SharpNeedle.Framework.HedgehogEngine.Sparkle;
 
 [NeedleResource("hh/sparkle", @"\.part-bin$")]
-public class SparkleProject : ResourceBase, IBinarySerializable
+public class SparkleParticleProject : ResourceBase, IBinarySerializable
 {
     public ProjectInfo? ProjectInfo { get; set; }
     public Effect? Effect { get; set; }
-    public Material? Material { get; set; }
     public List<Emitter> Emitters { get; set; } = [];
 
     public override void Read(IFile file)
@@ -28,41 +27,22 @@ public class SparkleProject : ResourceBase, IBinarySerializable
     {
         ProjectInfo = reader.ReadObject<ProjectInfo>();
 
-        switch (ProjectInfo.Type)
+        //InportExportEffect
+        Effect = reader.ReadObject<Effect>();
+        for (int i = 0; i < ProjectInfo.EmitterCount; i++)
         {
-            case ProjectType.Effect:
-            {
-                //InportExportEffect
-                Effect = reader.ReadObject<Effect>();
-                for (int i = 0; i < ProjectInfo.EmitterCount; i++)
-                {
-                    Emitters.Add(reader.ReadObject<Emitter>());
-                }
-                break;
-            }
-            case ProjectType.Material:
-            {
-                //InportExportMaterial
-                Material = reader.ReadObject<Material>();
-                break;
-            }
+            Emitters.Add(reader.ReadObject<Emitter>());
         }
     }
     public void Write(BinaryObjectWriter writer)
     {
         writer.WriteObject(ProjectInfo);
 
-        if (ProjectInfo.Type == ProjectType.Effect)
+        writer.WriteObject(Effect);
+        for (int i = 0; i < ProjectInfo.EmitterCount; i++)
         {
-            writer.WriteObject(Effect);
-            for (int i = 0; i < ProjectInfo.EmitterCount; i++)
-            {
-                writer.WriteObject(Emitters[i]);
-            }
+            writer.WriteObject(Emitters[i]);
         }
-
-        if (ProjectInfo.Type == ProjectType.Material)
-            writer.WriteObject(Material);
 
         //S E G A
         writer.Write(83);

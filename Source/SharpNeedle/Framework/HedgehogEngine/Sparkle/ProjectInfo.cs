@@ -10,8 +10,8 @@ public class ProjectInfo : IBinarySerializable
 
     public void Read(BinaryObjectReader reader)
     {
-        Editor = reader.ReadStringPaddedByte();
-        Type = reader.ReadStringPaddedByte() == "CEffect" ? ProjectType.Effect : ProjectType.Material;
+        Editor = reader.ReadStringPaddedByte(4);
+        Type = reader.ReadStringPaddedByte(4) == "CEffect" ? ProjectType.Effect : ProjectType.Material;
 
         if (Type == ProjectType.Effect)
         {
@@ -24,8 +24,8 @@ public class ProjectInfo : IBinarySerializable
 
     public void Write(BinaryObjectWriter writer)
     {
-        writer.WriteStringPaddedByte(Editor);
-        writer.WriteStringPaddedByte(Type == ProjectType.Effect ? "CEffect" : "Material");
+        writer.WriteStringPaddedByte(Editor, 4);
+        writer.WriteStringPaddedByte(Type == ProjectType.Effect ? "CEffect" : "Material", 4);
 
         if (Type == ProjectType.Effect)
         {

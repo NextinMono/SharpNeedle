@@ -19,7 +19,7 @@ public class Effect : IBinarySerializable
 
     public void Read(BinaryObjectReader reader)
     {        
-        Name = reader.ReadStringPaddedByte();
+        Name = reader.ReadStringPaddedByte(4);
         InitialLifeTime = reader.ReadSingle();
         ScaleRatio = reader.ReadSingle();
         GenerateCountRatio = reader.ReadSingle();
@@ -42,7 +42,7 @@ public class Effect : IBinarySerializable
 
     public void Write(BinaryObjectWriter writer)
     {
-        writer.WriteStringPaddedByte(Name);
+        writer.WriteStringPaddedByte(Name, 4);
         writer.Write(InitialLifeTime);
         writer.Write(ScaleRatio);
         writer.Write(GenerateCountRatio);

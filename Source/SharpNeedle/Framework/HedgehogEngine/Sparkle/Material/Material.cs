@@ -13,10 +13,10 @@ public class Material : IBinarySerializable
 
     public void Read(BinaryObjectReader reader)
     {
-        Name = reader.ReadStringPaddedByte();
-        ShaderName = reader.ReadStringPaddedByte();
-        TextureName = reader.ReadStringPaddedByte();
-        DeflectionTextureName = reader.ReadStringPaddedByte();
+        Name = reader.ReadStringPaddedByte(4);
+        ShaderName = reader.ReadStringPaddedByte(4);
+        TextureName = reader.ReadStringPaddedByte(4);
+        DeflectionTextureName = reader.ReadStringPaddedByte(4);
         AddressMode = (TextureAddressMode)reader.ReadInt32();
         BlendMode = (MaterialBlend)reader.ReadInt32();
         reader.Seek(16, SeekOrigin.Current);
@@ -24,10 +24,10 @@ public class Material : IBinarySerializable
 
     public void Write(BinaryObjectWriter writer)
     {
-        writer.WriteStringPaddedByte(Name);
-        writer.WriteStringPaddedByte(ShaderName);
-        writer.WriteStringPaddedByte(TextureName);
-        writer.WriteStringPaddedByte(DeflectionTextureName);
+        writer.WriteStringPaddedByte(Name, 4);
+        writer.WriteStringPaddedByte(ShaderName, 4);
+        writer.WriteStringPaddedByte(TextureName, 4);
+        writer.WriteStringPaddedByte(DeflectionTextureName, 4);
         writer.Write(AddressMode);
         writer.Write(BlendMode);
     }

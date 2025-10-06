@@ -74,7 +74,7 @@ public class Particle : IBinarySerializable
 
     public void Read(BinaryObjectReader reader)
     {
-        ParticleName = reader.ReadStringPaddedByte();
+        ParticleName = reader.ReadStringPaddedByte(4);
 
         LifeTime = reader.ReadSingle();
         LifeTimeBias = reader.ReadSingle();
@@ -117,7 +117,7 @@ public class Particle : IBinarySerializable
         InitialScale = reader.Read<Vector4>();
         InitialScaleBias = reader.Read<Vector4>();
 
-        MeshName = reader.ReadStringPaddedByte();
+        MeshName = reader.ReadStringPaddedByte(4);
 
         RotationXYZ = reader.Read<Vector4>();
         RotationXYZBias = reader.Read<Vector4>();
@@ -127,7 +127,7 @@ public class Particle : IBinarySerializable
         UVScrollParam = reader.Read<Vector4>();
         UVScrollParamAlpha = reader.Read<Vector4>();
 
-        RefEffectName = reader.ReadStringPaddedByte();
+        RefEffectName = reader.ReadStringPaddedByte(4);
         RefEffectEmitTimingType = reader.ReadInt32();
         RefEffectDelayTime = reader.ReadSingle();
 
@@ -137,7 +137,7 @@ public class Particle : IBinarySerializable
         VelocityOffset = reader.ReadSingle();
         UserData = reader.ReadInt32();
 
-        MaterialName = reader.ReadStringPaddedByte();
+        MaterialName = reader.ReadStringPaddedByte(4);
 
         FieldU1 = reader.ReadInt32();
         FieldU2 = reader.ReadInt32();
@@ -151,8 +151,8 @@ public class Particle : IBinarySerializable
     }
     public void Write(BinaryObjectWriter writer)
     {
-        writer.WriteStringPaddedByte("ParticleChunk");
-        writer.WriteStringPaddedByte(ParticleName);
+        writer.WriteStringPaddedByte("ParticleChunk", 4);
+        writer.WriteStringPaddedByte(ParticleName, 4);
         writer.Write(LifeTime);
         writer.Write(LifeTimeBias);
 
@@ -192,7 +192,7 @@ public class Particle : IBinarySerializable
         writer.Write(InitialScale);
         writer.Write(InitialScaleBias);
 
-        writer.WriteStringPaddedByte(MeshName);
+        writer.WriteStringPaddedByte(MeshName, 4);
 
         writer.Write(RotationXYZ);
         writer.Write(RotationXYZBias);
@@ -201,7 +201,7 @@ public class Particle : IBinarySerializable
         writer.Write(UVScrollParam);
         writer.Write(UVScrollParamAlpha);
 
-        writer.WriteStringPaddedByte(RefEffectName);
+        writer.WriteStringPaddedByte(RefEffectName, 4);
         writer.Write(RefEffectEmitTimingType);
         writer.Write(RefEffectDelayTime);
 
@@ -210,7 +210,7 @@ public class Particle : IBinarySerializable
         writer.Write(SoftScale);
         writer.Write(VelocityOffset);
         writer.Write(UserData);
-        writer.WriteStringPaddedByte(MaterialName);
+        writer.WriteStringPaddedByte(MaterialName, 4);
 
         writer.Write(FieldU1);
         writer.Write(FieldU2);

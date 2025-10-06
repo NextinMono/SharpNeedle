@@ -19,7 +19,7 @@ public class Animation : IBinarySerializable
     public void Read(BinaryObjectReader reader)
     {
         //AnimationChunk
-        reader.ReadStringPaddedByte();
+        reader.ReadStringPaddedByte(4);
 
         ColorA = reader.ReadObject<Track>();
         ColorB = reader.ReadObject<Track>();
@@ -37,7 +37,7 @@ public class Animation : IBinarySerializable
 
     public void Write(BinaryObjectWriter writer)
     {
-        writer.WriteStringPaddedByte("AnimationChunk");
+        writer.WriteStringPaddedByte("AnimationChunk", 4);
 
         writer.WriteObject(ColorA);
         writer.WriteObject(ColorB);

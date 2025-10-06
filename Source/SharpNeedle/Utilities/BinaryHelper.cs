@@ -115,12 +115,12 @@ public static class BinaryHelper
         return result;
     }
 
-    public static string ReadStringPaddedByte(this BinaryObjectReader reader)
+    public static string ReadStringPaddedByte(this BinaryObjectReader reader, uint alignment)
     {
         byte[] stringBuffer = reader.ReadArray<byte>(reader.ReadByte());
         string result = reader.Encoding.GetString(stringBuffer);
 
-        while (reader.Position % 4 != 0)
+        while ((reader.Position % alignment) != 0)
         {
             reader.ReadByte();
         }
@@ -317,10 +317,10 @@ public static class BinaryHelper
         writer.WriteArray(nulls);
     }
 
-    public static void WriteStringPaddedByte(this BinaryObjectWriter writer, string? str, char paddingCharacter = '@')
+    public static void WriteStringPaddedByte(this BinaryObjectWriter writer, string? str, uint alignment, char paddingCharacter = '@')
     {
         writer.WriteString(StringBinaryFormat.PrefixedLength8, str);
-        while ((writer.Position & 3) != 0)
+        while ((writer.Position % alignment) != 0)
         {
             writer.Write((byte)paddingCharacter);
         }

@@ -36,9 +36,9 @@ public class Emitter : IBinarySerializable
     public void Read(BinaryObjectReader reader)
     {
         // Emitter Params
-        reader.ReadStringPaddedByte();
+        reader.ReadStringPaddedByte(4);
         ParticleCount = reader.ReadInt32();
-        Name = reader.ReadStringPaddedByte();
+        Name = reader.ReadStringPaddedByte(4);
 
         MaxGenerateCount = reader.ReadInt32();
         GenerateCount = reader.ReadInt32();
@@ -60,7 +60,7 @@ public class Emitter : IBinarySerializable
         CylinderParams = reader.ReadObject<Cylinder>();
         SphereParams = reader.ReadObject<Sphere>();
         Size = reader.Read<Vector4>();
-        MeshName = reader.ReadStringPaddedByte();
+        MeshName = reader.ReadStringPaddedByte(4);
 
         FieldU1 = reader.ReadInt32();
         FieldU2 = reader.ReadInt32();
@@ -80,7 +80,7 @@ public class Emitter : IBinarySerializable
             // ParticleSaveLoad
             for (int p = 0; p < ParticleCount; p++)
             {
-                if (reader.ReadStringPaddedByte() == "ParticleChunk")
+                if (reader.ReadStringPaddedByte(4) == "ParticleChunk")
                 {
                     ParticleSaveLoad.Add(reader.ReadObject<Particle>());
                 }
@@ -90,9 +90,9 @@ public class Emitter : IBinarySerializable
 
     public void Write(BinaryObjectWriter writer)
     {
-        writer.WriteStringPaddedByte("EmitterChunk");
+        writer.WriteStringPaddedByte("EmitterChunk", 4);
         writer.Write(ParticleCount);
-        writer.WriteStringPaddedByte(Name);
+        writer.WriteStringPaddedByte(Name, 4);
         writer.Write(MaxGenerateCount);
         writer.Write(GenerateCount);
         writer.Write(ParticleDataFlags);
@@ -113,7 +113,7 @@ public class Emitter : IBinarySerializable
         writer.WriteObject(CylinderParams);
         writer.WriteObject(SphereParams);
         writer.Write(Size);
-        writer.WriteStringPaddedByte(MeshName);
+        writer.WriteStringPaddedByte(MeshName, 4);
 
         writer.Write(FieldU1);
         writer.Write(FieldU2);
