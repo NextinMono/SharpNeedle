@@ -4,7 +4,7 @@ public class CastInfoTable : List<(string? Name, int FamilyIdx, int CastIdx)>, I
 {
     public void Read(BinaryObjectReader reader)
     {
-        int count = reader.Read<int>();
+        long count = reader.OffsetBinaryFormat == OffsetBinaryFormat.U64 ? reader.Read<long>() : reader.Read<int>();
         if (count == 0)
         {
             reader.Skip(reader.GetOffsetSize());

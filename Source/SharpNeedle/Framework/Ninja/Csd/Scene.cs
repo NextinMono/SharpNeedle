@@ -22,9 +22,9 @@ public class Scene : IBinarySerializable
         float motionBegin = reader.Read<float>();
         float motionEnd = reader.Read<float>();
         Textures = new List<Vector2>(reader.ReadArrayOffset<Vector2>(reader.Read<int>()));
-        Sprites = new List<Sprite>(reader.ReadArrayOffset<Sprite>(reader.Read<int>()));
+        Sprites = new List<Sprite>(reader.ReadArrayOffset<Sprite>((int)(reader.OffsetBinaryFormat == OffsetBinaryFormat.U64 ? reader.Read<long>() : reader.Read<int>())));
 
-        int familyCount = reader.Read<int>();
+        int familyCount = (int)(reader.OffsetBinaryFormat == OffsetBinaryFormat.U64 ? reader.Read<long>() : reader.Read<int>());
         Families = new List<Family>(familyCount);
         reader.ReadOffset(() =>
         {
@@ -51,6 +51,12 @@ public class Scene : IBinarySerializable
         if (Version >= 1)
         {
             AspectRatio = reader.Read<float>();
+
+            //This is the only "new" field in x64 CSD files, is this alignment/padding, or is this a new field?
+            if (reader.OffsetBinaryFormat == OffsetBinaryFormat.U64)
+            {
+                reader.Read<uint>();
+            }
         }
 
         if (Version >= 2)
