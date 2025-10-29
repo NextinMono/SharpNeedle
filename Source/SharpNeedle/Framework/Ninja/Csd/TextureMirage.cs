@@ -19,7 +19,8 @@ public class TextureMirage : IBinarySerializable, ITexture
     public void Read(BinaryObjectReader reader)
     {
         Name = reader.ReadStringOffset();
-        MemoryDataIndex = (int)(reader.OffsetBinaryFormat == OffsetBinaryFormat.U64 ? reader.Read<long>() : reader.Read<int>());
+        // FYI: this is not an offset
+        MemoryDataIndex = (int)reader.ReadOffsetValue();
     }
 
     public void Write(BinaryObjectWriter writer)

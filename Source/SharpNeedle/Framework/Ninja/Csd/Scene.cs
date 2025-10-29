@@ -22,9 +22,11 @@ public class Scene : IBinarySerializable
         float motionBegin = reader.Read<float>();
         float motionEnd = reader.Read<float>();
         Textures = new List<Vector2>(reader.ReadArrayOffset<Vector2>(reader.Read<int>()));
-        Sprites = new List<Sprite>(reader.ReadArrayOffset<Sprite>((int)(reader.OffsetBinaryFormat == OffsetBinaryFormat.U64 ? reader.Read<long>() : reader.Read<int>())));
+        // The ReadOffsetValue call is not for an offset
+        Sprites = new List<Sprite>(reader.ReadArrayOffset<Sprite>((int)reader.ReadOffsetValue()));
 
-        int familyCount = (int)(reader.OffsetBinaryFormat == OffsetBinaryFormat.U64 ? reader.Read<long>() : reader.Read<int>());
+        // FYI: this is not an offset
+        int familyCount = (int)reader.ReadOffsetValue();
         Families = new List<Family>(familyCount);
         reader.ReadOffset(() =>
         {

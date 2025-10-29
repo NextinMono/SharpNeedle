@@ -21,7 +21,8 @@ public class Family : IBinarySerializable<Scene>, IList<Cast>
     public void Read(BinaryObjectReader reader, Scene context)
     {
         Scene = context;
-        int castCount = (int)(reader.OffsetBinaryFormat == OffsetBinaryFormat.U64 ? reader.Read<long>() : reader.Read<int>());
+        // FYI: this is not an offset
+        int castCount = (int)reader.ReadOffsetValue();
         
         CastBuffer = new List<Cast>(castCount);
         reader.ReadOffset(() =>
@@ -32,7 +33,8 @@ public class Family : IBinarySerializable<Scene>, IList<Cast>
             }
         });
 
-        int root = (int)(reader.OffsetBinaryFormat == OffsetBinaryFormat.U64 ? reader.Read<long>() : reader.Read<int>());
+        // FYI: this is not an offset
+        int root = (int)reader.ReadOffsetValue();
         TreeDescriptorNode[] tree = reader.ReadArrayOffset<TreeDescriptorNode>(CastBuffer.Count);
         if (CastBuffer.Count != 0)
         {
